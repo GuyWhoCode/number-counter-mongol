@@ -1,6 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
+import { ArrowLeft } from "lucide-react"
 
 import { Badge } from "@workspace/ui/components/badge"
 import { Label } from "@workspace/ui/components/label"
@@ -14,9 +16,19 @@ export function PricingSection() {
 
     return (
         <section className="mx-auto w-full max-w-6xl px-4 py-16 sm:py-24">
+            <div className="mb-10">
+                <Link
+                    href="/"
+                    className="group inline-flex items-center gap-2 border border-border bg-card px-3.5 py-2 text-sm font-medium text-muted-foreground no-underline transition-colors hover:border-foreground/40 hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+                >
+                    <ArrowLeft className="size-4 shrink-0 transition-transform duration-200 group-hover:-translate-x-0.5" />
+                    <span>Back to home</span>
+                </Link>
+            </div>
+
             <div className="mx-auto max-w-2xl text-center">
                 <h1 className="text-4xl font-semibold tracking-tight text-balance sm:text-5xl">
-                    Pick the plan that fits your work
+                    Pick one that fits your lifestyle
                 </h1>
                 <p className="mt-4 text-pretty text-muted-foreground">
                     Start free and upgrade when you need more room. Change or

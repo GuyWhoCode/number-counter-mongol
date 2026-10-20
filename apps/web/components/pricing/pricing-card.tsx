@@ -21,7 +21,7 @@ type PricingCardProps = {
 }
 
 export function PricingCard({ tier, yearly }: PricingCardProps) {
-    const monthlyPrice = yearly ? tier.price.yearly : tier.price.monthly
+    const monthlyPrice = yearly ? Math.round(tier.price.yearly) : Math.round(tier.price.monthly)
     const isFree = tier.price.monthly === 0
 
     return (
@@ -53,7 +53,7 @@ export function PricingCard({ tier, yearly }: PricingCardProps) {
                         {isFree
                             ? "Free forever"
                             : yearly
-                              ? `Billed $${tier.price.yearly * 12} per year`
+                              ? `Billed $${Math.round(tier.price.yearly * 12)} per year`
                               : "Billed monthly"}
                     </p>
                 </div>
