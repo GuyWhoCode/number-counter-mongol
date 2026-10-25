@@ -73,7 +73,7 @@ export function PricingCard({ tier, yearly }: PricingCardProps) {
 
             <CardFooter>
                 <Link
-                    href={`/signup?plan=${tier.id}${yearly && !isFree ? "&billing=yearly" : ""}`}
+                    href={`/?plan=${tier.id}`}
                     className={cn(
                         buttonVariants({
                             variant: tier.featured ? "default" : "outline",

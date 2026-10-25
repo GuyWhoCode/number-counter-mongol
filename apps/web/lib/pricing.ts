@@ -34,6 +34,7 @@ export const tiers: Tier[] = [
         features: [
             "10 unique sound effects",
             "More numbers to click",
+            "Can count unique numbers",
             "Priority Support",
         ],
     },

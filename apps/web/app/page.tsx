@@ -1,8 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect } from "react"
 import Link from "next/link"
 import { Settings } from "lucide-react"
+import { useNumberCounter } from "../lib/use-number-counter"
 import { Button, buttonVariants } from "@workspace/ui/components/button"
 import {
     AlertDialog,
@@ -15,26 +16,32 @@ import {
     AlertDialogTitle,
 } from "@workspace/ui/components/alert-dialog"
 
-const CLICK_LIMIT = 20
-
 export default function Home() {
-    const [count, setCount] = useState(0)
-    const [limitReached, setLimitReached] = useState(false)
+    const {
+        count,
+        settings,
+        limitReached,
+        setLimitReached,
+        progress,
+        hydrated,
+        handleClick,
+        handleReset,
+    } = useNumberCounter()
 
-    function handleClick() {
-        if (count >= CLICK_LIMIT) {
-            setLimitReached(true)
-            return
-        }
-        setCount((c) => c + 1)
-    }
+    useEffect(() => {
+        if (!hydrated || !window.location.search) return
 
-    function handleReset() {
-        setCount(0)
-        setLimitReached(false)
-    }
+        // The hook has read the plan from the URL; remove the query string
+        // without refreshing the page or losing the URL hash.
+        window.history.replaceState(
+            window.history.state,
+            "",
+            window.location.pathname + window.location.hash
+        )
+    }, [hydrated])
 
-    const progress = (count / CLICK_LIMIT) * 100
+    const limitLabel =
+        settings.maxNumber === null ? "Unlimited" : settings.maxNumber
 
     return (
         <div className="flex min-h-screen flex-col">
@@ -109,8 +116,9 @@ export default function Home() {
 
                     <Button
                         onClick={handleClick}
+                        disabled={!hydrated}
                         className="aspect-square h-[min(60vmin,28rem)] min-h-56 w-[min(60vmin,28rem)] min-w-56 rounded-full text-[clamp(4rem,22vmin,12rem)] leading-none font-bold tracking-tighter tabular-nums shadow-2xl transition-all duration-150 ease-out hover:scale-[1.03] hover:shadow-[0_0_60px_-10px] active:scale-95"
-                        aria-label={`Click counter, currently ${count} of ${CLICK_LIMIT}`}
+                        aria-label={`Click counter, currently ${count} of ${limitLabel}`}
                     >
                         {count}
                     </Button>
@@ -121,7 +129,7 @@ export default function Home() {
                         Click the button to count.
                     </p>
                     <p className="text-xs font-medium tracking-[0.2em] text-muted-foreground/70 uppercase tabular-nums">
-                        {count} / {CLICK_LIMIT}
+                        {count} / {limitLabel}
                     </p>
                 </div>
             </main>
@@ -133,8 +141,8 @@ export default function Home() {
                             Click limit reached
                         </AlertDialogTitle>
                         <AlertDialogDescription>
-                            You&apos;ve used all {CLICK_LIMIT} clicks. Reset the
-                            counter to start again.
+                            You&apos;ve used all {settings.maxNumber} clicks.
+                            Reset the counter to start again.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
