@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import Link from "next/link"
 import { Settings } from "lucide-react"
 import { useNumberCounter } from "../lib/use-number-counter"
@@ -27,6 +27,47 @@ export default function Home() {
         handleClick,
         handleReset,
     } = useNumberCounter()
+
+    const clickAudioRef = useRef<HTMLAudioElement | null>(null)
+    const audioContextRef = useRef<AudioContext | null>(null)
+
+    useEffect(() => {
+        const audio = new Audio("/click.mp4")
+        audio.preload = "auto"
+        audio.volume = 1
+
+        const audioContext = new AudioContext()
+        const source = audioContext.createMediaElementSource(audio)
+        const gainNode = audioContext.createGain()
+        gainNode.gain.value = 10.0 
+        source.connect(gainNode)
+        gainNode.connect(audioContext.destination)
+
+        clickAudioRef.current = audio
+        audioContextRef.current = audioContext
+
+        return () => {
+            audio.pause()
+            clickAudioRef.current = null
+            audioContextRef.current = null
+            void audioContext.close()
+        }
+    }, [])
+
+    const handleCounterClick = () => {
+        handleClick()
+
+        const audio = clickAudioRef.current
+        if (audio) {
+            audio.currentTime = 0
+            void (async () => {
+                await audioContextRef.current?.resume()
+                await audio.play()
+            })().catch((error) => {
+                console.error("Could not play click sound:", error)
+            })
+        }
+    }
 
     useEffect(() => {
         if (!hydrated || !window.location.search) return
@@ -115,7 +156,7 @@ export default function Home() {
                     </svg>
 
                     <Button
-                        onClick={handleClick}
+                        onClick={handleCounterClick}
                         disabled={!hydrated}
                         className="aspect-square h-[min(60vmin,28rem)] min-h-56 w-[min(60vmin,28rem)] min-w-56 rounded-full text-[clamp(4rem,22vmin,12rem)] leading-none font-bold tracking-tighter tabular-nums shadow-2xl transition-all duration-150 ease-out hover:scale-[1.03] hover:shadow-[0_0_60px_-10px] active:scale-95"
                         aria-label={`Click counter, currently ${count} of ${limitLabel}`}

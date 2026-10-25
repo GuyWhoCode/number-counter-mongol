@@ -1,4 +1,10 @@
-import { Geist, Geist_Mono, Figtree } from "next/font/google"
+import { Geist_Mono, Figtree } from "next/font/google"
+import type { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "Number Counter Mongol",
+  description: "For the counting fit for mongoling",
+}
 
 import "@workspace/ui/globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
