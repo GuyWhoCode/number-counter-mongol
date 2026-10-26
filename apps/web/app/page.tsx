@@ -5,16 +5,7 @@ import Link from "next/link"
 import { Settings } from "lucide-react"
 import { useNumberCounter } from "../lib/use-number-counter"
 import { Button, buttonVariants } from "@workspace/ui/components/button"
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-} from "@workspace/ui/components/alert-dialog"
+import { VideoPopup } from "@/components/ad/video-popup"
 
 export default function Home() {
     const {
@@ -39,7 +30,7 @@ export default function Home() {
         const audioContext = new AudioContext()
         const source = audioContext.createMediaElementSource(audio)
         const gainNode = audioContext.createGain()
-        gainNode.gain.value = 10.0 
+        gainNode.gain.value = 10.0
         source.connect(gainNode)
         gainNode.connect(audioContext.destination)
 
@@ -175,30 +166,7 @@ export default function Home() {
                 </div>
             </main>
 
-            <AlertDialog open={limitReached} onOpenChange={setLimitReached}>
-                <AlertDialogContent className="rounded-3xl">
-                    <AlertDialogHeader>
-                        <AlertDialogTitle className="tracking-tight">
-                            Click limit reached
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                            You&apos;ve used all {settings.maxNumber} clicks.
-                            Reset the counter to start again.
-                        </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                        <AlertDialogCancel className="rounded-full">
-                            Close
-                        </AlertDialogCancel>
-                        <AlertDialogAction
-                            onClick={handleReset}
-                            className="rounded-full"
-                        >
-                            Reset counter
-                        </AlertDialogAction>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
+            <VideoPopup open={limitReached} onComplete={handleReset} />
         </div>
     )
 }
