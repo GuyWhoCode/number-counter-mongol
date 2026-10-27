@@ -7,6 +7,7 @@ export const metadata: Metadata = {
 }
 
 import "@workspace/ui/globals.css"
+import "./color-themes.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@workspace/ui/lib/utils"
 

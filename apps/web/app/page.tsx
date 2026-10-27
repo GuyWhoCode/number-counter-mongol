@@ -6,6 +6,7 @@ import { Settings } from "lucide-react"
 import { useNumberCounter } from "../lib/use-number-counter"
 import { Button, buttonVariants } from "@workspace/ui/components/button"
 import { VideoPopup } from "@/components/ad/video-popup"
+import { ThemePicker } from "@/components/theme-picker"
 
 export default function Home() {
     const {
@@ -85,6 +86,7 @@ export default function Home() {
                     Number Counter Mongol
                 </Link>
                 <nav className="flex items-center gap-1" aria-label="Main">
+                    <ThemePicker />
                     <Link
                         href="/pricing"
                         className={buttonVariants({

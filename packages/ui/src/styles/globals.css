@@ -120,13 +120,29 @@
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+    * {
+        @apply border-border outline-ring/50;
     }
-  body {
-    @apply bg-background text-foreground;
+    body {
+        @apply bg-background text-foreground;
     }
-  button:not(:disabled), [role="button"]:not(:disabled) {
-    cursor: pointer;
+    button:not(:disabled),
+    [role="button"]:not(:disabled) {
+        cursor: pointer;
+    }
+
+    html,
+    body {
+        cursor:
+            url("/Tony-cursor.png") 32 32,
+            auto;
+    }
+
+    a,
+    button,
+    [role="button"] {
+        cursor:
+            url("/Tony-cursor.png") 32 32,
+            pointer;
     }
 }
